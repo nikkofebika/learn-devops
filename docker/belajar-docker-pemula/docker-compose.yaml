@@ -1,0 +1,49 @@
+version: '3'
+services:
+  todolist-db:
+    container_name: todolist-db
+    restart: always
+    image: postgres
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=secret
+      - POSTGRES_DB=todolist
+    volumes:
+      - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - todolist
+  todolist-api:
+    container_name: todolist-api
+    restart: always
+    build: ./backend
+    ports:
+      - 8080:8080
+    environment:
+      - DB_HOST=todolist-db
+      - DB_PORT=5432
+      - DB_USER=root
+      - DB_PASSWORD=secret
+      - DB_NAME=todolist
+    networks:
+      - todolist
+    depends_on:
+      - todolist-db
+  todolist-frontend:
+    container_name: todolist-frontend
+    restart: always
+    build: ./frontend
+    ports:
+      - 8081:8080
+    environment:
+      - VUE_APP_API_BASE_URL=http://todolist-api:8080
+    networks:
+      - todolist
+
+networks:
+  todolist:
+    external: true
+
+# volumes:
+#   todolist-volume:

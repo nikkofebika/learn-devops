@@ -34,3 +34,15 @@ pull or download docker image from repository, ex: hub.docker.com
 # docker build -t image_name:version .
   docker build -t todolist:v1
   will create docker image with name todolist and tag v1
+
+# docker network
+  - docker network create
+  - docker network connect networkName containerName
+  - docker network disconnect networkName containerName
+
+# docker compose
+  - docker compose up
+    run all services/container by docker-compose.yaml file
+  - docker compose ls
+    show all container in the compose file
+  - docker compose stop/start containerName
