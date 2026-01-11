@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: rs-service-nginx-load-balancer
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: service-nginx-load-balancer
+  template:
+    metadata:
+      labels:
+        app: service-nginx-load-balancer
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-nginx-load-balancer
+spec:
+  type: LoadBalancer
+  selector:
+    app: service-nginx-load-balancer
+  ports:
+  - port: 8080
+    targetPort: 80

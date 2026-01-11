@@ -1,0 +1,15 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: job-nodejs
+spec:
+  # ttlSecondsAfterFinished: 100
+  completions: 4
+  parallelism: 2
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: nodejs-job
+        image: khannedy/nodejs-job
+        # command: ["perl",  "-Mbignum=bpi", "-wle", "print bpi(2000)"]

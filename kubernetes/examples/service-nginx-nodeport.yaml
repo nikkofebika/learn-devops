@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: rs-nodeport-nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      name: service-nodeport
+  template:
+    metadata:
+      name: nginx
+      labels:
+        name: service-nodeport
+    spec:
+      containers:
+        - name: nginx
+          image: nginx
+          ports:
+            - containerPort: 80
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-nginx-nodeport
+spec:
+  type: NodePort
+  selector:
+    name: service-nodeport
+  ports:
+    - port: 8080
+      targetPort: 80
+      nodePort: 30001
